@@ -247,7 +247,7 @@ static void* loadCustomModule(EGG::Heap* heap)
 {
     char relPath[64];
 
-    snprintf(relPath, 64, "/rel/NewerMKW_%c.rel",
+    snprintf(relPath, 64, "/rel/HideNSeek_%c.rel",
              *reinterpret_cast<char*>(0x80000003));
 
     const s32 entryNum = DVDConvertPathToEntrynum(relPath);

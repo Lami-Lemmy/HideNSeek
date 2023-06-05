@@ -1,6 +1,6 @@
 BIN := bin
 assetsbin := Assets/$(BIN)
-outfile := NewerMKW
+outfile := HideNSeek
 
 DUMMY != mkdir -p $(BIN)
 

@@ -1,6 +1,6 @@
 # Project directory
 BUILD := build
-TARGET := NewerMKW
+TARGET := HideNSeek
 SYMBOLS_SRC := ../symbols.txt
 SYMBOLS_OUT := $(TARGET)_P.rel.lst $(TARGET)_E.rel.lst $(TARGET)_J.rel.lst $(TARGET)_K.rel.lst
 
