@@ -47,6 +47,7 @@ jobs:
       - name: Make elf2rel
         if: steps.cache-elf2rel.outputs.cache-hit != 'true'
         run: |
+          ls
           mkdir elf2rel-cache
           cd elf2rel-cache
           cmake ../elf2rel
