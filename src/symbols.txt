@@ -44,12 +44,17 @@
 0x801A162C DCFlushRange
 0x801A1710 ICInvalidateRange
 0x803858F0 diResNameStr
+0x80386338 DWC_AuthServer
 0x800116E4 printf
 0x80011938 snprintf
 0x80011A2C sprintf
 0x801D17F8 memcpy
 0x8000F1F0 memmove
 0x80006038 memset
+0x801d25f8 NETSHA1GetDigest
+0x801d24f4 NETSHA1Init
+0x801d2544 NETSHA1Update
+0x80386d4c SSL_Initialised
 0x80013120 strcpy
 0x80021254 strlen
 0x8001329C strcmp
@@ -92,5 +97,7 @@
 0x8065920C Patch_VSRegion2
 0x80659724 Patch_VSRegion3
 0x8065A034 Patch_VSRegion4
+0x800ee3a0 Patch_WiimmfiHook1
+0x801d4efc Patch_WiimmfiHook2
 0x8027a404 Patch_WiimmfiURL
 0x80276054 Patch_WiimmfiVersion
