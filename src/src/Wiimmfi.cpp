@@ -4,7 +4,9 @@
 #include <patch.hh>
 #include <string.h>
 #include "main.h"
-#include "Wiimmfi.h"
+#include "Wiimmfi.hh"
+
+u32 expectedHash[] = {0x0FFF1F07, 0x00E638C9, 0x49FBEFFA, 0x79022D3A, 0x84AB134F};
 
 void onlineregionInit()
 {

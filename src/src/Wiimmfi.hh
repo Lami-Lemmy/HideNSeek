@@ -1,5 +1,7 @@
 // Wiimmfi.h
 #pragma once
+#include <patch.hh>
+#include <rvl/types.h>
 extern "C"
 {
     extern const char *Patch_AuthserverHosts[3];
@@ -11,7 +13,7 @@ extern "C"
     void NETSHA1Update();
     void NETSHA1GetDigest();
 }
-u32 expectedHash[] = {0x0FFF1F07, 0x00E638C9, 0x49FBEFFA, 0x79022D3A, 0x84AB134F};
+
 extern Instruction<1> Patch_VSRegion1;
 extern Instruction<1> Patch_VSRegion2;
 extern Instruction<1> Patch_VSRegion3;
