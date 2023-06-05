@@ -1,45 +1,71 @@
-name: Build Binaries
+name: CI
 
-on: [push, pull_request]
+on: 
+  push:
+  pull_request:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
-    timeout-minutes: 20
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Cache
-        id: cache-1
-        uses: actions/cache@v2
+      - name: Cache clang
+        id: cache-clang
+        uses: actions/cache@v3
         with:
-          path: cache
-          key: ${{ runner.os }}-cache-33
+          path: clang-cache
+          key: ${{ runner.os }}-cache-clang
 
-      - name: Download devkitPPC r33
-        if: steps.cache-1.outputs.cache-hit != 'true'
+      - name: Download Kuribo-Clang
+        if: steps.cache-clang.outputs.cache-hit != 'true'
         run: |
-          mkdir cache && cd cache
-          wget "https://wii.leseratte10.de/devkitPro/file.php/devkitPPC-r33-1-linux.pkg.tar.xz"
+          mkdir clang-cache
+          cd clang-cache
+          wget -O ClangKuribo.tar.gz https://www.dropbox.com/s/a5ds6eejbnwvo39/ClangKuribo.tar.gz?dl=1
           cd ..
-
-      - name: Extract devkitPPC
+  
+      - name: Configure Tools
         run: |
-          tar -xf cache/devkitPPC-r33-1-linux.pkg.tar.xz opt/devkitpro/devkitPPC --strip-components=1
+          cd clang-cache
+          tar -xf ClangKuribo.tar.gz
+          mv ClangKuribo ../clang
+          cd ..
+          tar -xf dkp-cache/devkitPPC-r41-2-linux_x86_64.pkg.tar.xz
+          sudo cp -r opt /
+          sudo apt-get install libboost-all-dev
+      
+      - name: elf2rel Cache
+        id: cache-elf2rel
+        uses: actions/cache@v3
+        with:
+          path: elf2rel-cache
+          key: ${{ runner.os }}-cache-e2r
 
-      - name: Install PyELFTools
-        run: |
-          pip install pyelftools
+      - name: Configure cmake
+        if: steps.cache-elf2rel.outputs.cache-hit != 'true'
+        uses: jwlawson/actions-setup-cmake@v1.13
 
-      - name: Compile
+      - name: Make elf2rel
+        if: steps.cache-elf2rel.outputs.cache-hit != 'true'
         run: |
-          PATH=$(pwd)/devkitpro/devkitPPC/bin:$PATH DEVKITPPC=$(pwd)/devkitpro/devkitPPC DEVKITPRO=$(pwd)/devkitpro
-          cd src
-          python3 make.py
+          mkdir elf2rel-cache
+          cd elf2rel-cache
+          cmake ../elf2rel
+          make
+          cd ..
+          
+
+
+      - name: Build Rels
+        run: |
+          cp elf2rel-cache/elf2rel elf2rel/elf2rel
+          make
 
       - name: Upload Result
         uses: sinshutu/upload-to-discord@v2.0.0
         env:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-            args: src/bin/*.bin
+          args: bin/*.rel
+        
