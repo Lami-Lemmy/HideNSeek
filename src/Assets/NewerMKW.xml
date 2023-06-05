@@ -1,0 +1,36 @@
+<wiidisc version="1">
+    <id game="RMC"/>
+    <options>
+        <section name="NewerMKW">
+            <option name="Main Mod">
+                <choice name="Enabled">
+					<patch id="NMKWLoader"/>
+                    <patch id="NMKWCode"/>
+					<patch id="NMKWTracks"/>
+					<patch id="NMKWSound"/>
+                </choice>
+				<choice name="Code Only">
+					<patch id="NMKWLoader"/>
+					<patch id="NMKWCode"/>
+				</choice>
+            </option>
+        </section>
+    </options>
+	<patch id="NMKWLoader" root="/NewerMKW">
+		<memory offset="0x80004100" valuefile="loader.bin" />
+        <memory offset="0x8000A290" value="4BFF9E71" original="4819D04D" /> <!--RMCP-->
+        <memory offset="0x8000A250" value="4BFF9EB1" original="4819CFED" /> <!--RMCE-->
+        <memory offset="0x8000A1EC" value="4BFF9F15" original="4819D011" /> <!--RMCJ-->
+        <memory offset="0x8000A398" value="4BFF9D69" original="4819D2A1" /> <!--RMCK-->
+	</patch>
+	<patch id="NMKWCode" root="/NewerMKW">
+		<folder external="rel" disc="/rel" create="true"/>
+		<memory offset="0x80604094" value="4800001C" original="3c608038" /> <!--ESRB Screen Skip (NTSC-U only)-->
+	</patch>
+	<patch id="NMKWTracks" root="/NewerMKW">
+		<folder external="course" disc="/"/>
+	</patch>
+	<patch id="NMKWSound" root="/NewerMKW">
+		<folder external="sound" disc="/"/>
+	</patch>
+</wiidisc>
