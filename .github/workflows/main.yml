@@ -31,8 +31,6 @@ jobs:
           tar -xf ClangKuribo.tar.gz
           mv ClangKuribo ../clang
           cd ..
-          tar -xf dkp-cache/devkitPPC-r41-2-linux_x86_64.pkg.tar.xz
-          sudo cp -r opt /
           sudo apt-get install libboost-all-dev
       
       - name: elf2rel Cache
