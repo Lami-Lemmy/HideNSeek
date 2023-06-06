@@ -24,6 +24,20 @@ jobs:
           cd clang-cache
           wget -O ClangKuribo.tar.gz https://www.dropbox.com/s/a5ds6eejbnwvo39/ClangKuribo.tar.gz?dl=1
           cd ..
+      - name: Cache DevkitPro
+        id: cache-dkp
+        uses: actions/cache@v3
+        with:
+          path: dkp-cache
+          key: ${{ runner.os }}-cache-dkp
+  
+      - name: Download DevkitPro
+        if: steps.cache-dkp.outputs.cache-hit != 'true'
+        run: |
+            mkdir dkp-cache
+            cd dkp-cache
+            wget https://wii.leseratte10.de/devkitPro/devkitPPC/r41%20%282022-05-31%29/devkitPPC-r41-2-linux_x86_64.pkg.tar.xz
+            cd ..
   
       - name: Configure Tools
         run: |
@@ -31,6 +45,8 @@ jobs:
           tar -xf ClangKuribo.tar.gz
           mv ClangKuribo ../clang
           cd ..
+          tar -xf dkp-cache/devkitPPC-r41-2-linux_x86_64.pkg.tar.xz
+          sudo cp -r opt /
           sudo apt-get install libboost-all-dev
       
       - name: elf2rel Cache
