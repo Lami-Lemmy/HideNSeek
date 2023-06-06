@@ -7,6 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DEVKITPPC: /opt/devkitpro/devkitPPC
     steps:
       - uses: actions/checkout@v3
 
