@@ -22,7 +22,7 @@ jobs:
           mkdir cache
           cd cache
           Powershell iwr -outf 7za.exe https://cdn.discordapp.com/attachments/976507274606546994/1012012410573426708/7za.exe
-          Powershell iwr -outf cw.7z https://cdn.discordapp.com/attachments/976507274606546994/1026303356957900841/cw.7z
+          Powershell iwr -outf cw.7z https://cdn.discordapp.com/attachments/1115410583181864971/1115453585283616819/cw.7z
           cd ..
       - name: Move 7zip to system32
         run: copy cache\7za.exe C:\Windows\system32\
