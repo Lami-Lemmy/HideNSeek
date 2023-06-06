@@ -44,7 +44,7 @@ jobs:
         run: |
           mkdir dkp-cache
           cd dkp-cache
-          wget https://wii.leseratte10.de/devkitPro/devkitPPC/r41%20%282022-05-31%29/devkitPPC-r41-2-windows_x86_64.pkg.tar.xz
+          Powershell iwr -outf devkitPPC-r41-2-windows_x86_64.pkg.tar.xz https://wii.leseratte10.de/devkitPro/devkitPPC/r41%20%282022-05-31%29/devkitPPC-r41-2-windows_x86_64.pkg.tar.xz
           cd ..
       - name: Extract DevkitPro
         run: |
