@@ -5,7 +5,69 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build-loader:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache
+        id: cache-1
+        uses: actions/cache@v3.0.9
+        with:
+          path: cache
+          key: ${{ runner.os }}-cache-cw
+
+      - name: Download tooling
+        if: steps.cache-1.outputs.cache-hit != 'true'
+        run: |
+          mkdir cache
+          cd cache
+          Powershell iwr -outf 7za.exe https://cdn.discordapp.com/attachments/976507274606546994/1012012410573426708/7za.exe
+          Powershell iwr -outf cw.7z https://cdn.discordapp.com/attachments/976507274606546994/1026303356957900841/cw.7z
+          cd ..
+      - name: Move 7zip to system32
+        run: copy cache\7za.exe C:\Windows\system32\
+      
+      - name: Extract CW
+        run: 7za x cache\cw.7z
+      
+      - name: Compile Loader
+        run: |
+          cd loader
+          make
+          if ( -not (Test-Path -Path build\loader.bin) ) {exit 1}
+          mkdir ..\bin
+          copy build\loader.bin ..\bin\loader.bin
+          cd ..
+      - name: Upload Loader
+        uses: actions/upload-artifact@v2
+        with:
+          name: loader
+          path: bin/loader.bin
+
+        
+  upload-loader:
+      needs: build-loader
+      runs-on: ubuntu-latest
+      steps:
+        - name: Download Package
+          uses: actions/download-artifact@v3
+          with:
+            name: loader
+      
+        - name: Make folder for bins
+          run: mkdir bin && cp *.* bin/
+
+        - name: Upload Bins
+          uses: sinshutu/upload-to-discord@v2.0.0
+          env:
+              DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          with:
+           args: bin/*.bin
+      
+
+
+           
+  build-mod:
     runs-on: ubuntu-latest
     env:
       DEVKITPPC: /opt/devkitpro/devkitPPC
@@ -84,4 +146,7 @@ jobs:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
           args: bin/*.rel
-        
+
+
+
+
