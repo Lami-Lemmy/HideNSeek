@@ -47,7 +47,7 @@ namespace EGG
     };
 
 } // namespace EGG
-
+#ifndef __MWERKS__
 typedef struct
 {
     u8 _00[0x38 - 0x00];
@@ -63,3 +63,4 @@ void *spAlloc(size_t size, size_t align, EGG_Heap *heap);
 void *spAllocArray(size_t count, size_t size, size_t align, EGG_Heap *heap);
 
 void spFree(void *memBlock);
+#endif
