@@ -7,16 +7,18 @@ on:
 jobs:
   build-loader:
     runs-on: windows-latest
+    env:
+      DEVKITPPC: C:\devkitpro\devkitPPC
     steps:
       - uses: actions/checkout@v3
-      - name: Cache
+      - name: Cache CodeWarrior
         id: cache-1
         uses: actions/cache@v3.0.9
         with:
           path: cache
           key: ${{ runner.os }}-cache-cw
 
-      - name: Download tooling
+      - name: Download codewarrior
         if: steps.cache-1.outputs.cache-hit != 'true'
         run: |
           mkdir cache
@@ -30,6 +32,25 @@ jobs:
       - name: Extract CW
         run: 7za x cache\cw.7z
       
+      - name: Cache DevkitPro
+        id: cache-dkp
+        uses: actions/cache@v3
+        with:
+          path: dkp-cache
+          key: ${{ runner.os }}-cache-dkp
+      
+      - name: Download DevkitPro
+        if: steps.cache-dkp.outputs.cache-hit != 'true'
+        run: |
+          mkdir dkp-cache
+          cd dkp-cache
+          wget https://wii.leseratte10.de/devkitPro/devkitPPC/r41%20%282022-05-31%29/devkitPPC-r41-2-windows_x86_64.pkg.tar.xz
+          cd ..
+      - name: Extract DevkitPro
+        run: |
+          7z x dkp-cache\devkitPPC-r41-2-windows_x86_64.pkg.tar.xz
+          7z x devkitPPC-r41-2-windows_x86_64.pkg.tar
+          copy -r opt\devkitpro C:\devkitpro
       - name: Compile Loader
         run: |
           cd loader
