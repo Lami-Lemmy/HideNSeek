@@ -24,16 +24,16 @@
 #include <egg/eggHeap.h>
 #include <rvl/types.h>
 
-#define assert(expr)                                                           \
+#define assert(expr) \
     (((expr) ? (void)0 : __assert_fail(#expr, __FILE__, __LINE__)))
 
-static void loaderMain(void* rel, void* bss, EGG::Heap* heap);
-static void relCallProlog(void* rel);
-static void relCallEpilog(void* rel);
-static void* loadCustomModule(EGG::Heap* heap);
-static void* loadFromDVD(EGG::Heap* heap, s32 entryNum);
-static void* loadFromNAND(EGG::Heap* heap, s32 fd);
-static void __assert_fail(const char* expr, const char* file, s32 line);
+static void loaderMain(void *rel, void *bss, EGG::Heap *heap);
+static void relCallProlog(void *rel);
+static void relCallEpilog(void *rel);
+static void *loadCustomModule(EGG::Heap *heap);
+static void *loadFromDVD(EGG::Heap *heap, s32 entryNum);
+static void *loadFromNAND(EGG::Heap *heap, s32 fd);
+static void __assert_fail(const char *expr, const char *file, s32 line);
 
 EXTERN_C_START
 
@@ -62,17 +62,17 @@ EXTERN_C_END
 
 s32 rmc_index = -1;
 
-#define DEFINE_EXTERNAL_FUNCTION(_definition, _addr_e, _addr_j, _addr_p,       \
-                                 _addr_k)                                      \
-    asm _definition                                                            \
-    {                                                                          \
-        nofralloc;                                                             \
-        mflr r12;                                                              \
-        bl port_call;                                                          \
-        opword _addr_e;                                                        \
-        opword _addr_j;                                                        \
-        opword _addr_p;                                                        \
-        opword _addr_k;                                                        \
+#define DEFINE_EXTERNAL_FUNCTION(_definition, _addr_e, _addr_j, _addr_p, \
+                                 _addr_k)                                \
+    asm _definition                                                      \
+    {                                                                    \
+        nofralloc;                                                       \
+        mflr r12;                                                        \
+        bl port_call;                                                    \
+        opword _addr_e;                                                  \
+        opword _addr_j;                                                  \
+        opword _addr_p;                                                  \
+        opword _addr_k;                                                  \
     }
 
 static asm void port_call()
@@ -171,20 +171,20 @@ DEFINE_EXTERNAL_FUNCTION(
 
 // clang-format on
 
-static inline u32 relBssSize(void* rel)
+static inline u32 relBssSize(void *rel)
 {
-    return reinterpret_cast<u32*>(rel)[0x20 >> 2];
+    return reinterpret_cast<u32 *>(rel)[0x20 >> 2];
 }
 
-static void loaderMain(void* rel, void* bss, EGG::Heap* heap)
+static void loaderMain(void *rel, void *bss, EGG::Heap *heap)
 {
     // Fix libogc fuckery
     // Libogc apps are unable to initialise the DSP, reset it so the SDK takes care of it
     unsigned int *aiControl = (unsigned int *)0xcd006c00;
     *aiControl = 0x00000000;
 
-    char region = *reinterpret_cast<char*>(0x80000003);
-    
+    char region = *reinterpret_cast<char *>(0x80000003);
+
     rmc_index = region == 'E'   ? 0
                 : region == 'J' ? 1
                 : region == 'P' ? 2
@@ -195,10 +195,10 @@ static void loaderMain(void* rel, void* bss, EGG::Heap* heap)
     bool ret = OSLink(rel, bss);
     assert(ret);
 
-    void* new_rel = loadCustomModule(heap);
+    void *new_rel = loadCustomModule(heap);
     assert(new_rel);
 
-    void* new_bss = heap->alloc(relBssSize(new_rel), 32);
+    void *new_bss = heap->alloc(relBssSize(new_rel), 32);
     assert(new_bss);
 
     ret = OSLink(new_rel, new_bss);
@@ -206,7 +206,7 @@ static void loaderMain(void* rel, void* bss, EGG::Heap* heap)
     relCallProlog(new_rel);
 }
 
-static asm void relCallProlog(register void* rel)
+static asm void relCallProlog(register void *rel)
 {
     // clang-format off
     lwz     r12, 0x34(rel)
@@ -215,7 +215,7 @@ static asm void relCallProlog(register void* rel)
     // clang-format on
 }
 
-static asm void relCallEpilog(register void* rel)
+static asm void relCallEpilog(register void *rel)
 {
     // clang-format off
     lwz     r12, 0x38(rel)
@@ -228,44 +228,48 @@ static bool isDolphin()
 {
     // Check for /dev/dolphin
     s32 fd = IOS_Open("/dev/dolphin", 0);
-    if (fd >= 0) {
+    if (fd >= 0)
+    {
         IOS_Close(fd);
         return true;
     }
     // Or on an older version of dolphin, this bug will work.
-    if (fd = IOS_Open("/title", 1) == -106) {
+    if (fd = IOS_Open("/title", 1) == -106)
+    {
         return true;
     }
 
-    if (fd >= 0) {
+    if (fd >= 0)
+    {
         IOS_Close(fd);
     }
     return false;
 }
 
-static void* loadCustomModule(EGG::Heap* heap)
+static void *loadCustomModule(EGG::Heap *heap)
 {
     char relPath[64];
 
     snprintf(relPath, 64, "/rel/HideNSeek_%c.rel",
-             *reinterpret_cast<char*>(0x80000003));
+             *reinterpret_cast<char *>(0x80000003));
 
     const s32 entryNum = DVDConvertPathToEntrynum(relPath);
     OSReport("Custom module %s\n", relPath);
-    if (entryNum != -1) {
+    if (entryNum != -1)
+    {
         return loadFromDVD(heap, entryNum);
     }
 
     return 0;
 }
 
-static void* loadFromDVD(EGG::Heap* heap, s32 entryNum)
+static void *loadFromDVD(EGG::Heap *heap, s32 entryNum)
 {
     EGG::DvdFile file = makeDvdFile();
     bool ret = file.open(entryNum);
     assert(ret);
 
-    void* data = heap->alloc((file.getFileSize() + 31) & ~31, 32);
+    void *data = heap->alloc((file.getFileSize() + 31) & ~31, 32);
     assert(data != 0);
 
     ret = file.readData(data, file.getFileSize(), 0) != -1;
@@ -275,14 +279,14 @@ static void* loadFromDVD(EGG::Heap* heap, s32 entryNum)
     return data;
 }
 
-static void* loadFromNAND(EGG::Heap* heap, s32 fd)
+static void *loadFromNAND(EGG::Heap *heap, s32 fd)
 {
     const s32 size = IOS_Seek(fd, 0, 2 /* IOS_SEEK_END */);
     assert(size > 0);
     s32 ret = IOS_Seek(fd, 0, 0 /* IOS_SEEK_SET */);
     assert(ret == 0);
 
-    void* data = heap->alloc((size + 31) & ~31, 32);
+    void *data = heap->alloc((size + 31) & ~31, 32);
     assert(data != 0);
 
     ret = IOS_Read(fd, data, size);
@@ -290,12 +294,13 @@ static void* loadFromNAND(EGG::Heap* heap, s32 fd)
     return data;
 }
 
-void __assert_fail(const char* expr, const char* file, s32 line)
+void __assert_fail(const char *expr, const char *file, s32 line)
 {
     OSReport("loader assertion failed\n"
              "  %s\n"
              "  at file %s, line %d\n",
              expr, file, line);
-    while (1) {
+    while (1)
+    {
     }
 }
