@@ -8,15 +8,15 @@
 
 u32 expectedHash[] = {0x0FFF1F07, 0x00E638C9, 0x49FBEFFA, 0x79022D3A, 0x84AB134F};
 
-void onlineregionInit()
+static void onlineregionInit()
 {
     // Patch login region
-    // 105555 in ASCII
-    strcpy(Patch_LoginRegion, "105555");
-    Patch_VSRegion1.setWord(0x38A015B3);
-    Patch_VSRegion2.setWord(0x38A015B3);
-    Patch_VSRegion3.setWord(0x38A015B3);
-    Patch_VSRegion4.setWord(0x388000B3);
+    // 120053 in ASCII
+    strcpy(Patch_LoginRegion, "120053");
+    Patch_VSRegion1.setWord(0x38A04E55);
+    Patch_VSRegion2.setWord(0x38A04E55);
+    Patch_VSRegion3.setWord(0x38A04E55);
+    Patch_VSRegion4.setWord(0x38800055);
 }
 
 static void patchURL(u32 offset, const char *string)
@@ -25,7 +25,7 @@ static void patchURL(u32 offset, const char *string)
 }
 
 // clang-format off
-ASM_FUNCTION(extern "C" void wiimmfiAsm1(),
+ASM_FUNCTION(extern "C" static void wiimmfiAsm1(),
     // Original instruction
     cmpwi 3, 0;
     
@@ -69,7 +69,7 @@ ASM_FUNCTION(extern "C" void wiimmfiAsm1(),
     blr;
 );
 
-ASM_FUNCTION(extern "C" void wiimmfiAsm2(),
+ASM_FUNCTION(extern "C" static void wiimmfiAsm2(),
     // Return workaround 
 	stwu 1, -8 (1);
 	mflr 3;
@@ -140,30 +140,30 @@ ASM_FUNCTION(extern "C" void wiimmfiAsm2(),
 void wiimmfiPatcher()
 {
     strcpy(Patch_WiimmfiVersion, "LE-CODE GCT v1"); // Patcher name to please leseratte
-    Patch_AuthserverHosts[0] = "http://ca.nas.wiimmfi.de/ca";
-    Patch_AuthserverHosts[1] = "http://naswii.wiimmfi.de/ac";
+    patchURL(0x0, "://ca.nas.wiimmfi.de/ca");
+    patchURL(0x28, "://ca.nas.wiimmfi.de/ca");
+    patchURL(0xA8, "://naswii.wiimmfi.de/pr");
 
     switch (*(char *)0x80000003) // Region check
     {
     case 'P': // PAL
-        Patch_AuthserverHosts[2] = "https://main.nas.wiimmfi.de/pp";
+        patchURL(0x50, "main.nas.wiimmfi.de/pp");
         break;
     case 'E': // NTSC-U
-        Patch_AuthserverHosts[2] = "https://main.nas.wiimmfi.de/pe";
+        patchURL(0x50, "main.nas.wiimmfi.de/pe");
         break;
     case 'J': // NTSC-J
-        Patch_AuthserverHosts[2] = "https://main.nas.wiimmfi.de/pj";
+        patchURL(0x50, "main.nas.wiimmfi.de/pj");
         break;
     case 'K': // NTSC-K
-        Patch_AuthserverHosts[2] = "https://main.nas.wiimmfi.de/pk";
+        patchURL(0x50, "main.nas.wiimmfi.de/pk");
         break;
     default:
         u32 fg = 0xFFFFFFFF, bg = 0;
-        OSFatal(&fg, &bg, "This is weird..."); // Should never happen
+        OSFatal(&fg, &bg, "Invalid Region!"); // Should never happen
         break;
     }
 
-    patchURL(0xA8, "://naswii.wiimmfi.de/pr");
     patchURL(0x964, "wiimmfi.de");  // Available
     patchURL(0x10D4, "wiimmfi.de"); // GPCM
     patchURL(0x1AEC, "wiimmfi.de"); // GPSP
@@ -176,4 +176,5 @@ void wiimmfiPatcher()
 
     Patch_WiimmfiHook1.setBL(wiimmfiAsm1);
     Patch_WiimmfiHook2.setBL(wiimmfiAsm2);
+    onlineregionInit();
 }

@@ -21,4 +21,4 @@ extern Instruction<1> Patch_VSRegion4;
 extern Instruction<1> Patch_WiimmfiHook1;
 extern Instruction<1> Patch_WiimmfiHook2;
 
-void onlineregionInit();
+void wiimmfiPatcher();

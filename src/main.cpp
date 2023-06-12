@@ -8,7 +8,7 @@ void codeLoaded()
     OSReport("Main Function triggered\n");
     modInit(); // Write gecko codes
     initTitleScreen(); // Gecko Codeloader Checking
-    onlineregionInit(); // Online Region Patching
+    wiimmfiPatcher(); // Wiimmfi Patcher
     return;
 }
 
