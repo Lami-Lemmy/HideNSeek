@@ -4,6 +4,7 @@
 
 cw/
 clang
+bin/
 
 # clangd flags
 compile_flags.txt
