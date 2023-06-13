@@ -1,5 +1,6 @@
 // Wiimmfi.h
 #pragma once
+#define DEBUG
 #include <patch.hh>
 #include <rvl/types.h>
 extern "C"
@@ -14,6 +15,8 @@ extern "C"
     void NETSHA1GetDigest();
 }
 
+extern Instruction<1> Patch_DWC_Authserver_Debug;
+extern Instruction<1> Patch_DWC_Logmask;
 extern Instruction<1> Patch_VSRegion1;
 extern Instruction<1> Patch_VSRegion2;
 extern Instruction<1> Patch_VSRegion3;

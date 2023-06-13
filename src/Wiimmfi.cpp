@@ -1,5 +1,9 @@
 // Wiimmfi.cpp - Region patches for online
-
+/*
+    This file was originally reverse engineered from code in LE-Code that was written by Leseratte/Wiimm.
+    It's also went through several versions across different mods and patching systems, so contains some
+    edits from Seeky, TheLordScruffy, and CLF78 at various points.
+*/
 #include <asm.h>
 #include <patch.hh>
 #include <string.h>
@@ -25,7 +29,7 @@ static void patchURL(u32 offset, const char *string)
 }
 
 // clang-format off
-ASM_FUNCTION(extern "C" static void wiimmfiAsm1(),
+ASM_FUNCTION(extern "C" void wiimmfiAsm1(),
     // Original instruction
     cmpwi 3, 0;
     
@@ -69,7 +73,7 @@ ASM_FUNCTION(extern "C" static void wiimmfiAsm1(),
     blr;
 );
 
-ASM_FUNCTION(extern "C" static void wiimmfiAsm2(),
+ASM_FUNCTION(extern "C" void wiimmfiAsm2(),
     // Return workaround 
 	stwu 1, -8 (1);
 	mflr 3;
@@ -139,6 +143,10 @@ ASM_FUNCTION(extern "C" static void wiimmfiAsm2(),
 
 void wiimmfiPatcher()
 {
+    Patch_DWC_Authserver_Debug.setWord(0x3bc00000); // Force DWC_AUTHSERVER_DEBUG
+    #ifdef DEBUG
+    Patch_DWC_Logmask.setWord(0xFFFFFFFF);          // Force DWC_LOGMASK
+    #endif
     strcpy(Patch_WiimmfiVersion, "LE-CODE GCT v1"); // Patcher name to please leseratte
     patchURL(0x0, "://ca.nas.wiimmfi.de/ca");
     patchURL(0x28, "://ca.nas.wiimmfi.de/ca");

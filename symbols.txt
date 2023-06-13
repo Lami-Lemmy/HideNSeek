@@ -89,6 +89,8 @@
 0x80602cf8 Page_playSfx
 0x805c28d8 _ZN2UI12ControlGroup4calcEv
 0x8027a474 Patch_AuthserverHosts
+0x800ecaac Patch_DWC_Authserver_Debug
+0x803862c0 Patch_DWC_Logmask
 0x80549974 Patch_LicenseUnlocker
 0x80384fd0 Patch_LoginRegion
 0x807ba5d0 Patch_NoBulletIcon

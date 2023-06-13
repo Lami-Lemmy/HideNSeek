@@ -2,7 +2,6 @@
 
 #include "main.h"
 #include <patch.hh>
-
 void codeLoaded()
 {
     OSReport("Main Function triggered\n");
