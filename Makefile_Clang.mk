@@ -43,12 +43,16 @@ $(BUILD)/$(TARGET).elf: $(OFILES)
 	@$(LD) -Tlink.ld -r $(OFILES) -o $@
 
 $(BUILD)/$(TARGET)_P.rel.lst: $(SYMBOLS_SRC)
+	@echo porting ... $@
 	@python $(PORT) P $(SYMBOLS_SRC) $@ 
 $(BUILD)/$(TARGET)_E.rel.lst: $(SYMBOLS_SRC)
+	@echo porting ... $@
 	@python $(PORT) E $(SYMBOLS_SRC) $@ 
 $(BUILD)/$(TARGET)_J.rel.lst: $(SYMBOLS_SRC)
+	@echo porting ... $@
 	@python $(PORT) J $(SYMBOLS_SRC) $@ 
 $(BUILD)/$(TARGET)_K.rel.lst: $(SYMBOLS_SRC)
+	@echo porting ... $@
 	@python $(PORT) K $(SYMBOLS_SRC) $@ 
 
 $(BUILD)/$(TARGET)_%.rel: $(BUILD)/$(TARGET).elf $(BUILD)/$(TARGET)_%.rel.lst
