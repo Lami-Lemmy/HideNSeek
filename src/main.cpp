@@ -5,7 +5,7 @@
 void codeLoaded()
 {
     OSReport("Main Function triggered\n");
-    modInit(); // Write gecko codes
+    modInit(); // Write mod codes
     initTitleScreen(); // Gecko Codeloader Checking
     wiimmfiPatcher(); // Wiimmfi Patcher
     return;

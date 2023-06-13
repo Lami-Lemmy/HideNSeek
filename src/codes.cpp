@@ -2,6 +2,8 @@
 
 #include <patch.hh>
 #include "codes.h"
+#include "Sound.hh"
+#include "Voting.hh"
 
 // Temporary values
 u8 tempVal8;
@@ -63,4 +65,9 @@ void modInit()
 
     // Set Default Drift Type (By CLF78)
     Patch_DefaultDrift.setWord(0x38600001);
+
+    // Custom code
+    soundInit();
+    votingInit();
+
 }

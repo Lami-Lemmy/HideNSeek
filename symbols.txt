@@ -89,6 +89,7 @@
 0x80602cf8 Page_playSfx
 0x805c28d8 _ZN2UI12ControlGroup4calcEv
 0x8027a474 Patch_AuthserverHosts
+0x800912d4 Patch_AutoBRSARHook 
 0x8064795b Patch_AutoFriendsMenu
 0x8064d616 Patch_AutoFriendsMenu2
 0x8064d51a Patch_AutoFriendsMenu3
@@ -97,6 +98,7 @@
 0x800ecaac Patch_DWC_Authserver_Debug
 0x803862c0 Patch_DWC_Logmask
 0x80645d58 Patch_FixResultColors
+0x80661e20 Patch_HostAlwaysWinsHook
 0x80384fd0 Patch_LoginRegion
 0x80549974 Patch_LicenseUnlocker
 0x8053f478 Patch_No556DC
