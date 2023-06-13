@@ -2,7 +2,7 @@
 
 #include <asm.h>
 #include <patch.hh>
-#include "TitleScreen.hpp"
+#include "TitleScreen.hh"
 
 // Gecko Check Taken from MKW-SP
 // clang-format off

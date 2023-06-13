@@ -117,7 +117,7 @@ bool isWiiMini(){
 // Riivolution Detection
 bool isRiivolution()
 {
-    // See if the string "/dev/do" is at 0x803858f0 PAL
+    // Check if the disc drive interface is the Riivolution one
     if (strcmp(diResNameStr, "/dev/do") == 0)
         return true;
 
