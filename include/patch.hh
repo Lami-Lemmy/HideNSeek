@@ -4,26 +4,27 @@
 
 namespace BranchType
 {
-enum E
-{
-    B,
-    BL
-};
+    enum E
+    {
+        B,
+        BL
+    };
 } // namespace BranchType
 
 template <int N>
-struct Instruction {
+struct Instruction
+{
     void flush()
     {
         const u32 cacheLineAddr = reinterpret_cast<u32>(m_instr) & ~31;
         const u32 cacheLineEnd =
             (reinterpret_cast<u32>(m_instr + N) + 31) & ~31;
-        DCFlushRange(reinterpret_cast<void*>(cacheLineAddr),
+        DCFlushRange(reinterpret_cast<void *>(cacheLineAddr),
                      cacheLineEnd - cacheLineAddr);
     }
 
     template <class T>
-    u32 makeBranch(int offset, T* dest, BranchType::E type)
+    u32 makeBranch(int offset, T *dest, BranchType::E type)
     {
         const u32 destAddr = reinterpret_cast<u32>(dest);
 
@@ -62,9 +63,21 @@ struct Instruction {
         flush();
     }
 
-    void setWord(int word, int offset = 0)
+    void setWord(u32 word, int offset = 0)
     {
         m_instr[offset] = word;
+        flush();
+    }
+
+    void setHalfWord(u16 halfWord, int offset = 0)
+    {
+        m_instr[offset] = halfWord;
+        flush();
+    }
+
+    void setSmallWord(u8 smallWord, int offset = 0)
+    {
+        m_instr[offset] = smallWord;
         flush();
     }
 
