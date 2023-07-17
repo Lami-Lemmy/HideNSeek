@@ -271,7 +271,7 @@ static void *loadFromDVD(EGG::Heap *heap, s32 entryNum)
 
     void *data = heap->alloc((file.getFileSize() + 31) & ~31, 32);
     assert(data != 0);
-
+    OSReport("Heap: %p\n", heap);
     ret = file.readData(data, file.getFileSize(), 0) != -1;
     assert(ret);
 
