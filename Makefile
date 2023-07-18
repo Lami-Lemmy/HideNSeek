@@ -15,3 +15,7 @@ clean:
 	rm -rf loader/build
 	rm -rf src/build
 	rm -rf $(BIN)
+
+fresh:
+	@$(MAKE) --no-print-directory clean
+	@$(MAKE) --no-print-directory default
