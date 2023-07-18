@@ -71,13 +71,15 @@ struct Instruction
 
     void setHalfWord(u16 halfWord, int offset = 0)
     {
-        m_instr[offset] = halfWord;
+        u16 *shortAddr = reinterpret_cast<u16 *>(&m_instr[offset]);
+        *shortAddr = halfWord;
         flush();
     }
 
     void setSmallWord(u8 smallWord, int offset = 0)
     {
-        m_instr[offset] = smallWord;
+        u8 *byteAddr = reinterpret_cast<u8 *>(&m_instr[offset]);
+        *byteAddr = smallWord;
         flush();
     }
 

@@ -14,19 +14,17 @@ u32 tempVal32;
 // Those get their own files along with the code itself
 void modInit()
 {
+    
     // Exception Handler (By Star)
     Patch_ShowExceptions.setWord(0);
 
     // Battle Close-Up Camera (By _tZ and CLF78)
-
     Patch_BattleCamera.setSmallWord(1);
     Patch_BattleCamera.setSmallWord(1, 0x494);
 
     // Diable 5:56 Disconnection (By Ro)
-    tempVal16 = 0x4800;
-    unsigned int *tempPtr = (unsigned int *)0x8053f478;
-    *tempPtr = tempVal16;
-    // Patch_No556DC.setHalfWord(tempVal16);
+    tempVal16 = 0x4800;;
+    Patch_No556DC.setHalfWord(tempVal16);
 
     // Disable Lakitu when going backwards (By CLF78)
     Patch_NoLakitu.setHalfWord(tempVal16);
@@ -47,8 +45,8 @@ void modInit()
     
     // Go To Friends Menu Automatically (By Chadderz)
     Patch_AutoFriendsMenu.setSmallWord(0x8D);
-    Patch_AutoFriendsMenu2.setSmallWord(0x28);
-    Patch_AutoFriendsMenu3.setSmallWord(0x30);
+    Patch_AutoFriendsMenu2.setHalfWord(0x28);
+    Patch_AutoFriendsMenu3.setHalfWord(0x30);
 
     // Improved Position Interpolation (By stebler)
     Patch_NoInterpolation.setWord(0x3F800000);

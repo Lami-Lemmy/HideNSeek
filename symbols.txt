@@ -39,12 +39,14 @@
 0x8002155C _restfpr_29
 0x80021560 _restfpr_30
 0x80021564 _restfpr_31
+0x805c28d8 _ZN2UI12ControlGroup4calcEv
 0x80005F34 memcpy_slow
 0x801D17F8 NETMemCpy
 0x801A162C DCFlushRange
 0x801A1710 ICInvalidateRange
 0x803858F0 diResNameStr
 0x80386338 DWC_AuthServer
+0x8059020c GetPlayerPosition
 0x800116E4 printf
 0x80011938 snprintf
 0x80011A2C sprintf
@@ -87,13 +89,15 @@
 0x805f9244 MessageWindowPopupPage_setMessage
 0x806025b0 Page_push
 0x80602cf8 Page_playSfx
-0x805c28d8 _ZN2UI12ControlGroup4calcEv
 0x8027a474 Patch_AuthserverHosts
 0x800912d4 Patch_AutoBRSARHook 
 0x8064795b Patch_AutoFriendsMenu
 0x8064d616 Patch_AutoFriendsMenu2
 0x8064d51a Patch_AutoFriendsMenu3
 0x805a8677 Patch_BattleCamera
+0x805780e4 Patch_BattleCCFixHook
+0x805353cc Patch_BattleRespawnFixHook
+0x80536304 Patch_BattleStartFixHook
 0x8054636c Patch_DefaultDrift
 0x800ecaac Patch_DWC_Authserver_Debug
 0x803862c0 Patch_DWC_Logmask
@@ -115,6 +119,7 @@
 0x806fa924 Patch_NoTitleDemo
 0x80530474 Patch_ResetSeeker
 0x802a7404 Patch_ShowExceptions
+0x80009330 Patch_nw4rexception
 0x8063adbc Patch_TitleScreenInit
 0x80653644 Patch_VSRegion1
 0x8065920c Patch_VSRegion2
@@ -124,3 +129,7 @@
 0x801d4efc Patch_WiimmfiHook2
 0x8027a404 Patch_WiimmfiURL
 0x80276054 Patch_WiimmfiVersion
+0x809c18f8 PlayerHolder
+0x8019ade0 PSVECSquareDistance
+0x809bd728 Racedata
+0x809bd730 Raceinfo
