@@ -60,7 +60,7 @@ jobs:
           copy build\loader.bin ..\bin\loader.bin
           cd ..
       - name: Upload Loader
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: loader
           path: bin/loader.bin
