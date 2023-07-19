@@ -463,6 +463,7 @@ CHUNKS = {
         Chunk(0x80875454, 0x8088344C, 0x808686FC),
         Chunk(0x8088344C, 0x8088F400, 0x8087F01C),
         Chunk(0x80891B28, 0x80891B2C, 0x8088D610),
+        Chunk(0x808A10D8, 0x808A10DC, 0x8089C9D0),
         Chunk(0x808B3984, 0x808B3988, 0x808AF134),
         Chunk(0x808B5B1C, 0x808B5B20, 0x808B125C),
         Chunk(0x808B5C78, 0x808B5C7C, 0x808B13B8),
@@ -512,7 +513,7 @@ CHUNKS = {
         Chunk(0x80637A80, 0x8063BCF8, 0x8063716C),
         Chunk(0x8063BE40, 0x8088F400, 0x8063B4AC),
         Chunk(0x80891B28, 0x80891B2C, 0x80891178),
-        Chunk(0x808B3984, 0x808B3988, 0x808B2AE4),
+        Chunk(0x80899692, 0x808B5CBF, 0x808987F2),
         Chunk(0x808B5B1C, 0x808B5B20, 0x808B4C7C),
         Chunk(0x808B5C78, 0x808B5C7C, 0x808B4DD8),
         Chunk(0x808CB550, 0x808CB554, 0x808CA6A0),
@@ -600,6 +601,7 @@ CHUNKS = {
         Chunk(0x8067818C, 0x80742B58, 0x80666534),
         Chunk(0x80743154, 0x8088F400, 0x80731514),
         Chunk(0x80891B28, 0x80891B2C, 0x8087FF30),
+        Chunk(0x808A10D8, 0x808A10DC, 0x8088F538),
         Chunk(0x808B3984, 0x808B3988, 0x808A1DFC),
         Chunk(0x808B5B1C, 0x808B5B20, 0x808A3F94),
         Chunk(0x808B5C78, 0x808B5C7C, 0x808A40F0),
@@ -731,7 +733,8 @@ with open(args.out_path, "w") as out_file:
     write_symbol(out_file, "PrevSeekers", 0x800002B8)
     # Other HnS variables
     write_symbol(out_file, "Version", 0x800003B0)
-    write_symbol(out_file, "NoMusic", 0x800004B0)
+    write_symbol(out_file, "KillData", 0x800004B0)
+    write_symbol(out_file, "NoMusic", 0x80004000)
     write_symbol(out_file, "ThirtyFPS", 0x8000400F)
     out_file.write("\n")
 

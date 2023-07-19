@@ -75,6 +75,7 @@
 0x8019B964 NANDSeek
 0x8019BF4C NANDGetLength
 0x8019E40C NANDGetHomeDir
+0x8015DF4C DVDConvertPathToEntrynum
 0x8015E2bC DVDOpen
 0x8015E568 DVDClose
 0x8015E834 DVDReadPrio
@@ -85,8 +86,11 @@
 0x802224E8 open__Q23EGG7DvdFileFPCc
 0x8022259C readData__Q23EGG7DvdFileFPvll
 0x802226D0 getFileSize__Q23EGG7DvdFileCFv
+0x809C1E38 MenuData
+0x805fa930 MenuDataGetPlayerName
 0x805f9224 MessageWindowPopupPage_reset
 0x805f9244 MessageWindowPopupPage_setMessage
+0x808a10d8 MusicPitch
 0x806025b0 Page_push
 0x80602cf8 Page_playSfx
 0x8027a474 Patch_AuthserverHosts
@@ -101,8 +105,10 @@
 0x8054636c Patch_DefaultDrift
 0x800ecaac Patch_DWC_Authserver_Debug
 0x803862c0 Patch_DWC_Logmask
+0x80711ea0 Patch_FastMusicHook
 0x80645d58 Patch_FixResultColors
 0x80661e20 Patch_HostAlwaysWinsHook
+0x808585b0 Patch_InitKillDataHook
 0x80384fd0 Patch_LoginRegion
 0x80549974 Patch_LicenseUnlocker
 0x8053f478 Patch_No556DC
@@ -112,6 +118,7 @@
 0x8053f0b4 Patch_NoDisconnect3
 0x8053f124 Patch_NoDisconnect4
 0x80891b28 Patch_NoInterpolation
+0x80857a1c Patch_NoKillDataHide
 0x805355bc Patch_NoLakitu
 0x805349ec Patch_NoLapCounting
 0x807c897c Patch_NoLuma
@@ -133,3 +140,9 @@
 0x8019ade0 PSVECSquareDistance
 0x809bd728 Racedata
 0x809bd730 Raceinfo
+0x809C4680 ScreenHUD
+0x805CD94C screenText_construct
+0x8063DDB4 SetMSGID
+0x809C2850 SomeJingleThing
+0x80580268 StarFunc
+0x80386000 SystemManager

@@ -1,6 +1,5 @@
 // Wiimmfi.h
 #pragma once
-#define DEBUG
 #include <patch.hh>
 #include <rvl/types.h>
 extern "C"

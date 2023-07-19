@@ -2,6 +2,8 @@
 
 #include "main.h"
 #include <patch.hh>
+#include <rvl/dvd.h>
+
 void codeLoaded()
 {
     OSReport("Main Function triggered\n");
@@ -10,5 +12,6 @@ void codeLoaded()
     wiimmfiPatcher(); // Wiimmfi Patcher
     return;
 }
+
 
 // kmBranch(0x800074d4, codeLoaded);

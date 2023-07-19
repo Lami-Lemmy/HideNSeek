@@ -27,6 +27,8 @@ extern "C" void doCheckGecko()
 
 void initTitleScreen()
 {
+    #ifndef DEBUG
     Patch_TitleScreenInit.setBL(InitGeckoCheck);
+    #endif
     return;
 }

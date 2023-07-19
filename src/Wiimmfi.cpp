@@ -31,113 +31,113 @@ static void patchURL(u32 offset, const char *string)
 // clang-format off
 ASM_FUNCTION(extern "C" void wiimmfiAsm1(),
     // Original instruction
-    cmpwi 3, 0;
+    cmpwi R3, 0;
     
     // Return workaround
-    mflr 23;
+    mflr R23;
 
     ble w1_end;
 
     // r13 replacements
-    lis 11, DWC_AuthServer@ha;
-    lis 12, SSL_Initialised@ha;
+    lis R11, DWC_AuthServer@ha;
+    lis R12, SSL_Initialised@ha;
 
-    lwz 3, 0xC(1);
-    lwz 0, DWC_AuthServer@l (11);
-    cmpwi 0, 2;
+    lwz R3, 0xC(1);
+    lwz R0, DWC_AuthServer@l (11);
+    cmpwi R0, 2;
     beq w1_cont;
 
-    stw 3, SSL_Initialised@l (12);
-    li 0, 2;
-    stw 0, DWC_AuthServer@l (11);
+    stw R3, SSL_Initialised@l (R12);
+    li R0, 2;
+    stw R0, DWC_AuthServer@l (R11);
     b w1_end;
 
     // Execute payload
     w1_cont:
-    addi 4, 3, 3;
-    rlwinm 4, 4, 0, 0, 29;
-    lbz 5, 0x0(4);
-    add 5, 4, 5;
-    dcbf 0, 5;
-    mtlr 5;
+    addi R4, R3, R3;
+    rlwinm R4, R4, 0, 0, 29;
+    lbz R5, 0x0(R4);
+    add R5, R4, R5;
+    dcbf 0, R5;
+    mtlr R5;
     blrl;
 
     // Original instruction
     w1_end:
-    li 3, -1;
-    cmpwi 3, 0;
+    li R3, -1;
+    cmpwi R3, 0;
 
     // Return workaround
-    mtlr 23;
-    li 23, 0;
+    mtlr R23;
+    li R23, 0;
     blr;
 );
 
 ASM_FUNCTION(extern "C" void wiimmfiAsm2(),
     // Return workaround 
-	stwu 1, -8 (1);
-	mflr 3;
-	stw 3, 4 (1);
+	stwu R1, -8 (R1);
+	mflr R3;
+	stw R3, 4 (R1);
 
-    lis 12, SSL_Initialised@ha;
+    lis R12, SSL_Initialised@ha;
 
     // Check if inited
-    lwz 4, SSL_Initialised@l (12);
-    cmplwi 4, 1;
+    lwz R4, SSL_Initialised@l (R12);
+    cmplwi R4, 1;
     ble w2_nomatch;
 
     // Push stack
-    stwu 1, -0x80(1);
+    stwu R1, -0x80(R1);
 
     // Call NETSHA1Init
-    addi 3, 1, 0x20;
+    addi R3, R1, 0x20;
     bl NETSHA1Init;
 
     // Call NETSHA1Update
-    addi 3, 1, 0x20;
-    lis 12, SSL_Initialised@ha;
-    lwz 4, SSL_Initialised@l (12);
-    li 5, 0x554;
-    stw 5, 0xC4(28);
+    addi R3, R1, 0x20;
+    lis R12, SSL_Initialised@ha;
+    lwz R4, SSL_Initialised@l (12);
+    li R5, 0x554;
+    stw R5, 0xC4(28);
     bl NETSHA1Update;
 
     // Call NETSHA1GetDigest
-    addi 3, 1, 0x20;
-    addi 4, 1, 0x10;
+    addi R3, R1, 0x20;
+    addi R4, R1, 0x10;
     bl NETSHA1GetDigest;
 
     // Setup loop
-    lis 3, (expectedHash-4)@h;
-    ori 3, 3, (expectedHash-4)@l;
-    addi 4, 1, 0xC;
-    li 5, 5;
-    mtctr 5;
+    lis R3, (expectedHash-4)@h;
+    ori R3, R3, (expectedHash-4)@l;
+    addi R4, R1, 0xC;
+    li R5, 5;
+    mtctr R5;
 
     // Loop it!
     w2_loop:
-    lwzu 5, 0x4(3);
-    lwzu 6, 0x4(4);
-    cmpw 6, 5;
+    lwzu R5, 0x4(R3);
+    lwzu R6, 0x4(R4);
+    cmpw R6, R5;
     bne w2_exit;
     bdnz+ w2_loop;
 
     // Check if we found a match and pop the stack
     w2_exit:
-    cmpw 6, 5;
-    addi 1, 1, 0x80;
-    lis 12, SSL_Initialised@ha;
-    lwz 4, SSL_Initialised@l (12);
+    cmpw R6, R5;
+    addi R1, R1, 0x80;
+    lis R12, SSL_Initialised@ha;
+    lwz R4, SSL_Initialised@l (R12);
     beq w2_end;
 
     // Return 0 otherwise
     w2_nomatch:
-    li 4, 0;
+    li R4, 0;
 
     w2_end:
     // Return workaround
-	lwz 3, 4 (1);
-	mtlr 3;
-	addi 1, 1, 8;
+	lwz R3, 4 (R1);
+	mtlr R3;
+	addi R1, R1, 8;
 	blr;
 );
 
