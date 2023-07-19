@@ -20,7 +20,7 @@ ASM_FUNCTION(void CustomJingleFunc(int sfx),
     cmpwi R4, 4;
     beqlr;
 
-    // If so, move the sfx if to R4
+    // If so, move the sfx id to R4
     mr R4, R3;
 
     // Instructions copies from the original game
