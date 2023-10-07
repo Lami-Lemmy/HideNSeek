@@ -112,6 +112,7 @@
 0x80384fd0 Patch_LoginRegion
 0x80549974 Patch_LicenseUnlocker
 0x8053f478 Patch_No556DC
+0x8053F3AC Patch_No5LimitHook
 0x807ba5d0 Patch_NoBulletIcon
 0x80521408 Patch_NoDisconnect1
 0x8053ef6c Patch_NoDisconnect2
@@ -122,6 +123,9 @@
 0x805355bc Patch_NoLakitu
 0x805349ec Patch_NoLapCounting
 0x807c897c Patch_NoLuma
+0x80850620 Patch_MainMenuSetup
+0x8085102c Patch_MainMenuCrashFixHook
+0x808512cb Patch_MKChannelRedirect
 0x807ba077 Patch_NoMushroomBug
 0x806fa924 Patch_NoTitleDemo
 0x80530474 Patch_ResetSeeker
@@ -140,6 +144,7 @@
 0x8019ade0 PSVECSquareDistance
 0x809bd728 Racedata
 0x809bd730 Raceinfo
+0x8063dfc8 ResetText
 0x809C4680 ScreenHUD
 0x805CD94C screenText_construct
 0x8063DDB4 SetMSGID

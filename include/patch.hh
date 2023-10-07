@@ -63,20 +63,20 @@ struct Instruction
         flush();
     }
 
-    void setWord(u32 word, int offset = 0)
+    void setWord(u32 word, u32 offset = 0)
     {
         m_instr[offset] = word;
         flush();
     }
 
-    void setHalfWord(u16 halfWord, int offset = 0)
+    void setHalfWord(u16 halfWord, u32 offset = 0)
     {
         u16 *shortAddr = reinterpret_cast<u16 *>(&m_instr[offset]);
         *shortAddr = halfWord;
         flush();
     }
 
-    void setSmallWord(u8 smallWord, int offset = 0)
+    void setSmallWord(u8 smallWord, u32 offset = 0)
     {
         u8 *byteAddr = reinterpret_cast<u8 *>(&m_instr[offset]);
         *byteAddr = smallWord;

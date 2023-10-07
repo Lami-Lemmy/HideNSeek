@@ -1,3 +1,4 @@
+#include <asm.h>
 #include <mod/hidenseek.h>
 #include <mod/killdata.h>
 #include <mod/musichandler.h>
@@ -8,16 +9,17 @@
 #include <patch.hh>
 #include <rvl/types.h>
 #include <string.h>
+#include "Timer.h"
 
 // External timer values
-extern u32 TimerVals[3];
+u32 TimerVals[3] = {0x8CA0, 0x4650, 0x34BC0};
 
 // Forward declarations
 void UpdateMutes();
 
 void MainTimerUpdate(u32 timer)
 {
-    TimerManager* tmanager; // This is supposed to be a register variable stored in r29 but C++17 removed support for that...
+    TimerManager *tmanager; // This is supposed to be a register variable stored in r29 but C++17 removed support for that...
 
     // Modified original instruction
     if (timer > 0)
@@ -79,7 +81,7 @@ void MainTimerUpdate(u32 timer)
     // Update Character/Vehicle sounds
     UpdateMutes();
 }
-u32 TimerChecks(_Raceinfo *rinfo)
+extern "C" u32 TimerChecks(_Raceinfo *rinfo)
 {
 
     // Return a different value based on which condition is true
@@ -135,4 +137,85 @@ u32 TimerChecks(_Raceinfo *rinfo)
 bool TimerFlashFix()
 {
     return (Have30SecondsPassed && Raceinfo->timerManager->frames <= 3600);
+}
+// clang-format off
+ASM_FUNCTION(void StartingTime(), // Starting Time Modifier
+    // Assume regular start timer
+    li R31, 1800;
+    // Check if HalfTimer is 2
+    cmpwi R11, 2;
+    bne+ end2;
+
+    // Set it to 3600 if so
+    slwi R31, R31, 1;
+
+    // Original Instruction
+    end2:
+    stw R31, 0x48(R29);
+    blr;
+);
+
+ASM_FUNCTION(void StartingTime2(), // Starting Time Modifier 2
+    li R12, 30;
+    // Check if HalfTimer is 2
+    lis R11, HalfTimer@ha;
+    lwz R11, HalfTimer@l(R11);
+    cmpwi R11, 2;
+    bne+ end;
+
+    // Set seconds to 0 and minutes to 1
+    mr R12, R31;
+    sth R12, 0x14(R3);
+
+    // Modified original instruction
+    end:
+    stb R12, 0x16(R3);
+    blr;
+);
+
+ASM_FUNCTION(void TimerEnd(),
+    lwz R3, 0x4(R31);
+
+    // Check if countdown has ended
+    lwz R4, 0x28(R3);
+    cmpwi R4, 2;
+    blt noEndRace;
+
+    // Call function
+    bl TimerChecks;
+
+    // Check if EndReason is not 0
+    cmpwi R3, 0;
+    bne endRace;
+
+    // Do not end the race yet
+    noEndRace:
+    b Patch_No5LimitHook+0x98;
+
+    // End the race
+    endRace:
+    b Patch_No5LimitHook+0x50;
+);
+
+ASM_FUNCTION(void TimerEndManager(),
+    lbz R4, 0xB84(R3);
+    slwi R4, R4, 2;
+    lis R3, Raceinfo@ha;
+    lwz R3, Raceinfo@l(R3);
+    lwz R3, 0xC(R3);
+    lwzx R3, R3, R4;
+    lwz R3, 0x44(R3);
+
+    // Return (endReason == 2)
+    xori R3, R3, 2;
+    cntlzw R3, R3;
+    srwi R3, R3, 5;
+    blr;
+);
+// clang-format on
+void initTimer()
+{
+    Patch_No5LimitHook.setB(TimerEnd);
+    
+    return;
 }
